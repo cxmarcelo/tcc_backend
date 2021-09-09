@@ -8,9 +8,10 @@ class Counties(db.Model):
     state = db.relationship('States')
     # state = db.relationship('States', back_populates='')
 
-    def __init__(self, name, initials):
+    def __init__(self, county_id, name, uf_id):
+        self.id = county_id
         self.name = name
-        self.initials = initials
+        self.uf_id = uf_id
 
 
 class CountiesSchema(ma.Schema):
