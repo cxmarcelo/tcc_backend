@@ -33,10 +33,12 @@ class InfoPatient(db.Model):
     exame = db.Column(db.Integer)
     xenodiag = db.Column(db.Integer)
     res_hist = db.Column(db.Integer)
+    id_patient = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)
+    patient = db.relationship('Patient')
 
     def __init__(self, dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
-                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist):
+                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist, id_patient):
         self.dt_notific = dt_notific
         self.sg_uf = sg_uf
         self.id_mn_resi = id_mn_resi
@@ -67,14 +69,14 @@ class InfoPatient(db.Model):
         self.exame = exame
         self.xenodiag = xenodiag
         self.res_hist = res_hist
-
+        self.id_patient = id_patient
 
 
 class InfoPatientSchema(ma.Schema):
     class Meta:
         fields = ('dt_notific', 'sg_uf', 'id_mn_resi', 'dt_nasc', 'cs_sexo', 'cs_gestant', 'cs_raca', 'dt_invest', 'id_ocupa_n', 'ant_uf_1',
                  'mun_1', 'ant_uf_2', 'mun_2', 'ant_uf_3', 'mun_3', 'historia', 'assintoma', 'edema', 'meningoe', 'poliadeno', 'febre',
-                 'hepatome', 'sinais_icc', 'arritmias', 'astenia', 'esplenom', 'chagoma', 'exame', 'xenodiag', 'res_hist')
+                 'hepatome', 'sinais_icc', 'arritmias', 'astenia', 'esplenom', 'chagoma', 'exame', 'xenodiag', 'res_hist', 'id_patient')
 
 
 infoPatient_schema = InfoPatientSchema()

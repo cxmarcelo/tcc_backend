@@ -1,0 +1,64 @@
+from app import db
+from flask import request, jsonify
+from ..models.patient import Patient, patient_schema, patients_schema
+
+
+def post_patient():
+    name = request.json['name']
+    sex = request.json['sex']
+    dt_nasc = request.json['dt_nasc']
+    cpfOrRg = request.json['cpfOrRg']
+    residenceUfId = request.json['residenceUfId']
+    residenceMunId = request.json['residenceMunId']
+    patient = Patient(name, sex, dt_nasc, cpfOrRg, residenceUfId, residenceMunId)
+
+    try:
+        db.session.add(patient)
+        db.session.commit()
+        result = patient_schema.dump(patient)
+        return jsonify({'message': 'Paciente Criado.', 'data': result}), 201
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'Falha ao criar paciente.', 'data': {}}), 500
+
+
+def get_patients():
+    patients = Patient.query.all()
+
+    if patients:
+        result = patients_schema.dump(patients)
+        return jsonify({"message": "Lista de pacientes encontrada.", "data": result})
+
+    return jsonify({"message": "Pacientes não encontrados.", "data": {}})
+
+
+def get_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+
+    if patient:
+        result = patient_schema.dump(patient)
+        return jsonify({"message": "Paciente encontrado", "data": result}), 200
+
+    return jsonify({"message": "Paciente não encontrado.", "data": {}}), 404
+
+
+def delete_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+    try:
+        db.session.delete(patient)
+        db.session.commit()
+        result = patient_schema.dump(patient)
+        return jsonify({"message": "Paciente deletado", "data": result}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Falha para deletar paciente.", "data": {}}), 500
+
+
+def get_patient_by_id(patient_id):
+    patient = Patient.query.get(patient_id)
+
+    if patient:
+        result = patient_schema.dump(patient)
+        return result, 200
+
+    return None

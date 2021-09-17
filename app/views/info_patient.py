@@ -4,14 +4,11 @@ from werkzeug.security import generate_password_hash
 from app import db
 from flask import request, jsonify
 from ..models.info_patient import InfoPatient, infoPatient_schema, infoPatients_schema
+from .patient import get_patient_by_id
 
 
 def post_infoPatient():
     dt_notific = datetime.datetime.now()
-    sg_uf = request.json['sg_uf']
-    id_mn_resi = request.json['id_mn_resi']
-    dt_nasc = request.json['dt_nasc']
-    cs_sexo = request.json['cs_sexo']
     cs_gestant = request.json['cs_gestant']
     cs_raca = request.json['cs_raca']
     dt_invest = request.json['dt_invest']
@@ -37,6 +34,20 @@ def post_infoPatient():
     exame = request.json['exame']
     xenodiag = request.json['xenodiag']
     res_hist = request.json['res_hist']
+
+    patient_id = request.json['patient_id']
+    if patient_id:
+        patient = get_patient_by_id(patient_id)
+        if patient:
+            cs_sexo = patient.sex
+            dt_nasc = patient.dt_nasc
+            sg_uf = patient.residenceUfId
+            id_mn_resi = patient.residenceMunId
+        else:
+            return jsonify({'message': 'Paciente não existe.', 'data': {}}), 400
+    else:
+        return jsonify({'message': 'Id do paciente não informado.', 'data': {}}), 400
+
     infoPatient = InfoPatient(dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
                  hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist)
