@@ -8,13 +8,15 @@ class Users(db.Model):
     password = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
+    user_type = db.Column(db.Integer, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.datetime.now())
 
-    def __init__(self, username, password, name, email):
+    def __init__(self, username, password, name, email, user_type):
         self.username = username
         self.password = password
         self.name = name
         self.email = email
+        self.user_type = user_type;
 
 
 class UsersSchema(ma.Schema):

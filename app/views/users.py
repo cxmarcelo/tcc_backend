@@ -9,8 +9,9 @@ def post_user():
     password = request.json['password']
     name = request.json['name']
     email = request.json['email']
+    user_type = request.json['user_type']
     pass_hash = generate_password_hash(password)
-    user = Users(username, pass_hash, name, email)
+    user = Users(username, pass_hash, name, email, user_type)
 
     try:
         db.session.add(user)
