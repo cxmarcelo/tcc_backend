@@ -3,7 +3,7 @@ from app import db, ma
 
 class Counties(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     uf_id = db.Column(db.Integer, db.ForeignKey('states.id'), nullable=False)
     state = db.relationship('States')
     # state = db.relationship('States', back_populates='')
