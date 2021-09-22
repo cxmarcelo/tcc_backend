@@ -10,7 +10,6 @@ from .patient import get_patient_by_id
 def post_infoPatient():
     dt_notific = datetime.datetime.now()
     cs_gestant = request.json['cs_gestant']
-    cs_raca = request.json['cs_raca']
     dt_invest = request.json['dt_invest']
     id_ocupa_n = request.json['id_ocupa_n']
     ant_uf_1 = request.json['ant_uf_1']
@@ -36,6 +35,7 @@ def post_infoPatient():
     res_hist = request.json['res_hist']
 
     patient_id = request.json['patient_id']
+
     if patient_id:
         patient = get_patient_by_id(patient_id)
         if patient:
@@ -43,6 +43,7 @@ def post_infoPatient():
             dt_nasc = patient.dt_nasc
             sg_uf = patient.residenceUfId
             id_mn_resi = patient.residenceMunId
+            cs_raca = request.json['cs_raca']
         else:
             return jsonify({'message': 'Paciente não existe.', 'data': {}}), 400
     else:
