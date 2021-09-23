@@ -1,10 +1,10 @@
 import datetime
 
-from werkzeug.security import generate_password_hash
 from app import db
 from flask import request, jsonify
 from ..models.info_patient import InfoPatient, infoPatient_schema, infoPatients_schema
 from .patient import get_patient_by_id
+from sqlalchemy import desc
 
 
 def post_infoPatient():
@@ -63,33 +63,7 @@ def post_infoPatient():
         return jsonify({'message': 'unable to create', 'data': {}}), 500
 
 
-def update_user(user_id):
-    username = request.json['username']
-    password = request.json['password']
-    name = request.json['name']
-    email = request.json['email']
-
-    user = InfoPatient.query.get(user_id)
-
-    if not user:
-        return jsonify({"message": "User don't exist", "data": {}})
-
-    pass_hash = generate_password_hash(password)
-
-    try:
-        user.username = username
-        user.password = pass_hash
-        user.name = name
-        user.email = email
-        db.session.commit()
-        result = infoPatient_schema.dump(user)
-        return jsonify({'message': 'successfully updated', 'data': result}), 200
-    except Exception as e:
-        print(e)
-        return jsonify({'message': 'unable to update', 'data': {}}), 500
-
-
-def get_users():
+def get_info_patients():
     users = InfoPatient.query.all()
 
     if users:
@@ -99,35 +73,11 @@ def get_users():
     return jsonify({"message": "nothing found", "data": {}})
 
 
-def get_user(user_id):
-    user = InfoPatient.query.get(user_id)
+def get_last_info_by_patient(patient_id):
+    patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
 
-    if user:
-        result = infoPatient_schema.dump(user)
-        return jsonify({"message": "success fetched", "data": result}), 200
+    if patient:
+        result = infoPatients_schema.dump(patient)
+        return jsonify({"message": "Consulta do paciente encontrado", "data": result})
 
-    return jsonify({"message": "user don't exist", "data": {}}), 404
-
-
-def delete_user(user_id):
-    user = InfoPatient.query.get(user_id)
-    try:
-        db.session.delete(user)
-        db.session.commit()
-        result = infoPatient_schema.dump(user)
-        return jsonify({"message": "successfully deleted", "data": result}), 200
-    except Exception as e:
-        print(e)
-        return jsonify({"message": "unable to delete", "data": {}}), 500
-
-
-def counties_by_ufId(uf_id):
-    name = request.args.get('name')
-    print(name)
-    counties = InfoPatient.query.filter(InfoPatient.uf_id == uf_id).filter(InfoPatient.name.like(f'{name}%'))
-
-    if counties:
-        result = infoPatients_schema.dump(counties)
-        return jsonify({"message": "success fetched", "data": result})
-
-    return jsonify({"message": "nothing found", "data": {}})
+    return jsonify({"message": "Consulta do Paciente não encontrado", "data": {}})

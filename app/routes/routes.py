@@ -85,10 +85,16 @@ def get_patient(patient_id):
 
 
 @app.route("/search_patient_cpf/<cpf>", methods=['GET'])
-def get_patient(cpf):
+def get_patient_by_cpf(cpf):
     return patient.get_patient_by_cpf(cpf)
 
 
 @app.route("/info_patient", methods=['POST'])
-def insert_patient():
+def insert_info_patient():
     return info_patient.post_infoPatient()
+
+
+@app.route("/info_patient_last/<patient_id>", methods=['GET'])
+def get_last_info_by_patient(patient_id):
+    return info_patient.get_last_info_by_patient(patient_id)
+
