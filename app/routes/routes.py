@@ -1,6 +1,6 @@
 from app import app
 from flask import jsonify
-from ..views import users, helper, counties, states, occupation
+from ..views import users, helper, counties, states, occupation, patient, info_patient
 
 
 @app.route("/", methods=['GET'])
@@ -68,3 +68,12 @@ def get_occupations():
 def get_occupation_by_id(occupation_id):
     return occupation.get_occupation_by_id(occupation_id)
 
+
+@app.route("/patient", methods=['POST'])
+def insert_patient():
+    return patient.post_patient()
+
+
+@app.route("/info_patient", methods=['POST'])
+def insert_patient():
+    return info_patient.post_infoPatient()
