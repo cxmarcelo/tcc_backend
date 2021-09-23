@@ -6,11 +6,12 @@ from ..models.patient import Patient, patient_schema, patients_schema
 def post_patient():
     name = request.json['name']
     sex = request.json['sex']
+    cs_raca = request.json['cs_raca']
     dt_nasc = request.json['dt_nasc']
     cpfOrRg = request.json['cpfOrRg']
     residenceUfId = request.json['residenceUfId']
     residenceMunId = request.json['residenceMunId']
-    patient = Patient(name, sex, dt_nasc, cpfOrRg, residenceUfId, residenceMunId)
+    patient = Patient(name, sex, cs_raca, dt_nasc, cpfOrRg, residenceUfId, residenceMunId)
 
     try:
         db.session.add(patient)
@@ -34,6 +35,16 @@ def get_patients():
 
 def get_patient(patient_id):
     patient = Patient.query.get(patient_id)
+
+    if patient:
+        result = patient_schema.dump(patient)
+        return jsonify({"message": "Paciente encontrado", "data": result}), 200
+
+    return jsonify({"message": "Paciente não encontrado.", "data": {}}), 404
+
+
+def get_patient_by_cpf(cpf):
+    patient = Patient.query.filter(Patient.cpfOrRg == cpf).one()
 
     if patient:
         result = patient_schema.dump(patient)

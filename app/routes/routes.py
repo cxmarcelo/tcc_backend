@@ -74,6 +74,21 @@ def insert_patient():
     return patient.post_patient()
 
 
+@app.route("/patient", methods=['GET'])
+def get_patients():
+    return patient.get_patients()
+
+
+@app.route("/patient/<patient_id>", methods=['GET'])
+def get_patient(patient_id):
+    return patient.get_patient(patient_id)
+
+
+@app.route("/search_patient_cpf/<cpf>", methods=['GET'])
+def get_patient(cpf):
+    return patient.get_patient_by_cpf(cpf)
+
+
 @app.route("/info_patient", methods=['POST'])
 def insert_patient():
     return info_patient.post_infoPatient()
