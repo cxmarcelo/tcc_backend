@@ -89,21 +89,19 @@ def insert_infoPatient(patient):
     exame = None
     xenodiag = None
     res_hist = None
-    cs_sexo = patient.sex
-    dt_nasc = patient.dt_nasc
-    sg_uf = patient.residenceUfId
-    id_mn_resi = patient.residenceMunId
-    cs_raca = patient.cs_raca
-
+    print("ANTES")
+    cs_sexo = patient["sex"]
+    dt_nasc = patient["dt_nasc"]
+    sg_uf = patient["residenceUfId"]
+    id_mn_resi = patient["residenceMunId"]
+    cs_raca = patient["cs_raca"]
+    print("DEPOIS")
     infoPatient = InfoPatient(datetime.datetime.now(), sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
                  hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist, patient.id)
     db.session.add(infoPatient)
     db.session.commit()
     return infoPatient_schema.dump(infoPatient)
-
-
-
 
 
 def get_info_patients():
