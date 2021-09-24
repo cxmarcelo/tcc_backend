@@ -65,8 +65,9 @@ def post_infoPatient():
 
 
 def insert_infoPatient(patient):
+    dt_notific = datetime.datetime.now()
     cs_gestant = PregnantCodeEnum.IGNORED.value
-    dt_invest = None
+    dt_invest = datetime.datetime.now()
     id_ocupa_n = None
     ant_uf_1 = None
     mun_1 = None
@@ -95,7 +96,7 @@ def insert_infoPatient(patient):
     id_mn_resi = patient["residenceMunId"]
     cs_raca = patient["cs_raca"]
     patient_id = patient["id"]
-    infoPatient = InfoPatient(datetime.datetime.now(), sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
+    infoPatient = InfoPatient(dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
                  hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist, patient_id)
     db.session.add(infoPatient)
