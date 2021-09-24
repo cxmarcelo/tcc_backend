@@ -8,10 +8,11 @@ def post_patient():
     sex = request.json['sex']
     cs_raca = request.json['cs_raca']
     dt_nasc = request.json['dt_nasc']
-    cpfOrRg = request.json['cpfOrRg']
+    cpf = request.json['cpf']
     residenceUfId = request.json['residenceUfId']
     residenceMunId = request.json['residenceMunId']
-    patient = Patient(name, sex, cs_raca, dt_nasc, cpfOrRg, residenceUfId, residenceMunId)
+    patient = Patient(name, sex, cs_raca, dt_nasc, cpf,
+                      residenceUfId, residenceMunId)
 
     try:
         db.session.add(patient)
@@ -44,7 +45,7 @@ def get_patient(patient_id):
 
 
 def get_patient_by_cpf(cpf):
-    patient = Patient.query.filter(Patient.cpfOrRg == cpf).one()
+    patient = Patient.query.filter(Patient.cpf == cpf).one()
 
     if patient:
         result = patient_schema.dump(patient)
