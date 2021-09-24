@@ -4,6 +4,7 @@ from app import db
 from flask import request, jsonify
 from ..models.info_patient import InfoPatient, infoPatient_schema, infoPatients_schema
 from .patient import get_patient_by_id
+from ..enums.PregnantCodeEnum import PregnantCodeEnum
 from sqlalchemy import desc
 
 
@@ -61,6 +62,48 @@ def post_infoPatient():
     except Exception as e:
         print(e)
         return jsonify({'message': 'unable to create', 'data': {}}), 500
+
+
+def insert_infoPatient(patient):
+    cs_gestant = PregnantCodeEnum.IGNORED
+    dt_invest = None
+    id_ocupa_n = None
+    ant_uf_1 = None
+    mun_1 = None
+    ant_uf_2 = None
+    mun_2 = None
+    ant_uf_3 = None
+    mun_3 = None
+    historia = None
+    assintoma = None
+    edema = None
+    meningoe = None
+    poliadeno = None
+    febre = None
+    hepatome = None
+    sinais_icc = None
+    arritmias = None
+    astenia = None
+    esplenom = None
+    chagoma = None
+    exame = None
+    xenodiag = None
+    res_hist = None
+    cs_sexo = patient.sex
+    dt_nasc = patient.dt_nasc
+    sg_uf = patient.residenceUfId
+    id_mn_resi = patient.residenceMunId
+    cs_raca = patient.cs_raca
+
+    infoPatient = InfoPatient(datetime.datetime.now(), sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
+                 mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
+                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist, patient.id)
+    db.session.add(infoPatient)
+    db.session.commit()
+    return infoPatient_schema.dump(infoPatient)
+
+
+
 
 
 def get_info_patients():

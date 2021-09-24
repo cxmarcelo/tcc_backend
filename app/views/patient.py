@@ -1,6 +1,7 @@
 from app import db
 from flask import request, jsonify
 from ..models.patient import Patient, patient_schema, patients_schema
+from .info_patient import insert_infoPatient
 
 
 def post_patient():
@@ -11,14 +12,18 @@ def post_patient():
     cpf = request.json['cpf']
     residenceUfId = request.json['residenceUfId']
     residenceMunId = request.json['residenceMunId']
-    patient = Patient(name, sex, cs_raca, dt_nasc, cpf,
-                      residenceUfId, residenceMunId)
+
+    patient = Patient(name, sex, cs_raca, dt_nasc, cpf, residenceUfId, residenceMunId)
 
     try:
         db.session.add(patient)
         db.session.commit()
-        result = patient_schema.dump(patient)
-        return jsonify({'message': 'Paciente Criado.', 'data': result}), 201
+        resultPatient = patient_schema.dump(patient)
+        resultInfoPatient = insert_infoPatient(resultPatient)
+
+        obj = {"patient": resultPatient, "resultInfoPatient": resultInfoPatient}
+        return jsonify({'message': 'Paciente Criado.', 'data': obj}), 201
+
     except Exception as e:
         print(e)
         return jsonify({'message': 'Falha ao criar paciente.', 'data': {}}), 500
