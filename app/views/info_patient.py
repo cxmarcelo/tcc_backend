@@ -3,11 +3,10 @@ import datetime
 from app import db
 from flask import request, jsonify
 from ..models.info_patient import InfoPatient, infoPatient_schema, infoPatients_schema
-from .patient import get_patient_by_id
 from ..enums.PregnantCodeEnum import PregnantCodeEnum
 from sqlalchemy import desc
 
-
+"""
 def post_infoPatient():
     dt_notific = datetime.datetime.now()
     cs_gestant = request.json['cs_gestant']
@@ -62,6 +61,7 @@ def post_infoPatient():
     except Exception as e:
         print(e)
         return jsonify({'message': 'unable to create', 'data': {}}), 500
+"""
 
 
 def insert_infoPatient(patient):
