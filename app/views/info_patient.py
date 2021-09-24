@@ -65,7 +65,7 @@ def post_infoPatient():
 
 
 def insert_infoPatient(patient):
-    cs_gestant = PregnantCodeEnum.IGNORED
+    cs_gestant = PregnantCodeEnum.IGNORED.value
     dt_invest = None
     id_ocupa_n = None
     ant_uf_1 = None
