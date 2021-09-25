@@ -33,7 +33,7 @@ def post_patient():
 
 def get_patients():
     patients = db.session.query(Patient, States, Counties).select_from(Patient).join(States).join(Counties)\
-        .filter(Patient.residenceUfId == States.id).filter(Patient.residenceMunId == Counties.id).all()
+        .all()
 
     if patients:
         result = patients_schema.dump(patients)
@@ -54,7 +54,7 @@ def get_patient(patient_id):
 
 def get_patient_by_cpf(cpf):
     patient = db.session.query(Patient, States, Counties).select_from(Patient).join(States).join(Counties) \
-        .filter(Patient.residenceUfId == States.id).filter(Patient.residenceMunId == Counties.id).filter(Patient.cpf == cpf).one()
+        .filter(Patient.cpf == cpf).one()
 
     if patient:
         result = patient_schema.dump(patient)
