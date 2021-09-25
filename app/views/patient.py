@@ -32,7 +32,8 @@ def post_patient():
 
 
 def get_patients():
-    patients = Patient.query(Patient, States, Counties).select_from(Patient).join(States).join(Counties).all()
+    patients = Patient.query(Patient, States, Counties).select_from(Patient).join(States).join(Counties)\
+        .filter(Patient.residenceUfId == States.id).filter(Patient.residenceMunId == Counties.id).all()
 
     if patients:
         result = patients_schema.dump(patients)
