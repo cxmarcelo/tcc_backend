@@ -64,6 +64,72 @@ def post_infoPatient():
 """
 
 
+def update_info_patient(patient_id):
+    dt_notific = request.json['dt_notific']
+    cs_gestant = request.json['cs_gestant']
+    dt_invest = request.json['dt_invest']
+    id_ocupa_n = request.json['id_ocupa_n']
+    ant_uf_1 = request.json['ant_uf_1']
+    mun_1 = request.json['mun_1']
+    ant_uf_2 = request.json['ant_uf_2']
+    mun_2 = request.json['mun_2']
+    ant_uf_3 = request.json['ant_uf_3']
+    mun_3 = request.json['mun_3']
+    historia = request.json['historia']
+    assintoma = request.json['assintoma']
+    edema = request.json['edema']
+    meningoe = request.json['meningoe']
+    poliadeno = request.json['poliadeno']
+    febre = request.json['febre']
+    hepatome = request.json['hepatome']
+    sinais_icc = request.json['sinais_icc']
+    arritmias = request.json['arritmias']
+    astenia = request.json['astenia']
+    esplenom = request.json['esplenom']
+    chagoma = request.json['chagoma']
+    exame = request.json['exame']
+    xenodiag = request.json['xenodiag']
+    res_hist = request.json['res_hist']
+
+    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+
+    if not info_patient:
+        return jsonify({"message": "Consulta não existe", "data": {}})
+
+    try:
+        info_patient.dt_notific = dt_notific
+        info_patient.cs_gestant = cs_gestant
+        info_patient.dt_invest = dt_invest
+        info_patient.id_ocupa_n = id_ocupa_n
+        info_patient.ant_uf_1 = ant_uf_1
+        info_patient.mun_1 = mun_1
+        info_patient.ant_uf_2 = ant_uf_2
+        info_patient.mun_2 = mun_2
+        info_patient.ant_uf_3 = ant_uf_3
+        info_patient.mun_3 = mun_3
+        info_patient.historia = historia
+        info_patient.assintoma = assintoma
+        info_patient.edema = edema
+        info_patient.meningoe = meningoe
+        info_patient.poliadeno = poliadeno
+        info_patient.febre = febre
+        info_patient.hepatome = hepatome
+        info_patient.sinais_icc = sinais_icc
+        info_patient.arritmias = arritmias
+        info_patient.astenia = astenia
+        info_patient.esplenom = esplenom
+        info_patient.chagoma = chagoma
+        info_patient.exame = exame
+        info_patient.xenodiag = xenodiag
+        info_patient.res_hist = res_hist
+        db.session.commit()
+        result = infoPatient_schema.dump(info_patient)
+        return jsonify({'message': 'successfully updated', 'data': result}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'unable to update', 'data': {}}), 500
+
+
 def insert_infoPatient(patient):
     dt_notific = datetime.datetime.now()
     cs_gestant = PregnantCodeEnum.IGNORED.value

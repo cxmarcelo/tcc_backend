@@ -1,6 +1,8 @@
 from app import db
 from flask import request, jsonify
 from ..models.patient import Patient, patient_schema, patients_schema
+from ..models.states import States
+from ..models.counties import Counties
 from .info_patient import insert_infoPatient
 
 
@@ -30,7 +32,7 @@ def post_patient():
 
 
 def get_patients():
-    patients = Patient.query.all()
+    patients = Patient.query(Patient, States, Counties).select_from(Patient).join(States).join(Counties).all()
 
     if patients:
         result = patients_schema.dump(patients)

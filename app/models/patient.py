@@ -8,8 +8,8 @@ class Patient(db.Model):
     cs_raca = db.Column(db.Integer, nullable=False)
     dt_nasc = db.Column(db.Date, nullable=False)
     cpf = db.Column(db.String(15), nullable=False, unique=True)
-    residenceUfId = db.Column(db.Integer, nullable=False)
-    residenceMunId = db.Column(db.Integer, nullable=False)
+    residenceUfId = db.Column(db.Integer, db.ForeignKey('states.id'), nullable=False)
+    residenceMunId = db.Column(db.Integer, db.ForeignKey('counties.id'), nullable=False)
 
     def __init__(self, name, sex, cs_raca, dt_nasc, cpf, residence_uf_id, residence_mun_id):
         self.name = name
