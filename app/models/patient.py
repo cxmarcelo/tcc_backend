@@ -10,7 +10,6 @@ class Patient(db.Model):
     cpf = db.Column(db.String(15), nullable=False, unique=True)
     residenceUfId = db.Column(db.Integer, db.ForeignKey('states.id'), nullable=False)
     residenceMunId = db.Column(db.Integer, db.ForeignKey('counties.id'), nullable=False)
-    state = db.relationship('States', backref='patient', lazy=True)
 
     def __init__(self, name, sex, cs_raca, dt_nasc, cpf, residence_uf_id, residence_mun_id):
         self.name = name
@@ -25,7 +24,7 @@ class Patient(db.Model):
 class PatientSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'sex', 'cs_raca', 'dt_nasc',
-                  'cpf', 'residenceUfId', 'residenceMunId', 'state')
+                  'cpf', 'residenceUfId', 'residenceMunId')
 
 
 patient_schema = PatientSchema()
