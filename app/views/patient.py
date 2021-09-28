@@ -1,8 +1,9 @@
 from app import db
 from flask import request, jsonify
 from ..models.patient import Patient, patient_schema, patients_schema
-from ..models.states import States, state_schema, states_schema
-from ..models.counties import Counties, county_schema, counties_schema
+from ..models.states import States, state_schema
+from ..models.counties import Counties, county_schema
+from ..models.info_patient import InfoPatient, infoPatient_schema
 from .info_patient import insert_infoPatient
 
 
@@ -60,6 +61,8 @@ def get_patient_by_cpf(cpf):
         result["state"] = state_schema.dump(state)
         county = Counties.query.filter(Counties.id == patient.residenceMunId).one()
         result["county"] = county_schema.dump(county)
+        info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient.id).one()
+        result["info_patient"] = infoPatient_schema.dump(info_patient)
 
         return jsonify({"message": "Paciente encontrado", "data": result}), 200
 

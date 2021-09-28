@@ -2,6 +2,8 @@ import datetime
 
 from app import db
 from flask import request, jsonify
+
+from ..enums.examRealizedEnum import ExamConfirmationEnum
 from ..models.info_patient import InfoPatient, infoPatient_schema, infoPatients_schema
 from ..enums.PregnantCodeEnum import PregnantCodeEnum
 from sqlalchemy import desc
@@ -32,7 +34,6 @@ def post_infoPatient():
     chagoma = request.json['chagoma']
     exame = request.json['exame']
     xenodiag = request.json['xenodiag']
-    res_hist = request.json['res_hist']
 
     patient_id = request.json['patient_id']
 
@@ -51,7 +52,7 @@ def post_infoPatient():
 
     infoPatient = InfoPatient(dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
-                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist)
+                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag)
 
     try:
         db.session.add(infoPatient)
@@ -89,7 +90,6 @@ def update_info_patient(patient_id):
     chagoma = request.json['chagoma']
     exame = request.json['exame']
     xenodiag = request.json['xenodiag']
-    res_hist = request.json['res_hist']
 
     info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
 
@@ -121,7 +121,6 @@ def update_info_patient(patient_id):
         info_patient.chagoma = chagoma
         info_patient.exame = exame
         info_patient.xenodiag = xenodiag
-        info_patient.res_hist = res_hist
         db.session.commit()
         result = infoPatient_schema.dump(info_patient)
         return jsonify({'message': 'successfully updated', 'data': result}), 200
@@ -134,28 +133,27 @@ def insert_infoPatient(patient):
     dt_notific = datetime.datetime.now()
     cs_gestant = PregnantCodeEnum.IGNORED.value
     dt_invest = datetime.datetime.now()
-    id_ocupa_n = None
-    ant_uf_1 = None
-    mun_1 = None
-    ant_uf_2 = None
-    mun_2 = None
-    ant_uf_3 = None
-    mun_3 = None
-    historia = None
-    assintoma = None
-    edema = None
-    meningoe = None
-    poliadeno = None
-    febre = None
-    hepatome = None
-    sinais_icc = None
-    arritmias = None
-    astenia = None
-    esplenom = None
-    chagoma = None
-    exame = None
-    xenodiag = None
-    res_hist = None
+    id_ocupa_n = 0
+    ant_uf_1 = 10000
+    mun_1 = 10000
+    ant_uf_2 = 10000
+    mun_2 = 10000
+    ant_uf_3 = 10000
+    mun_3 = 10000
+    historia = ExamConfirmationEnum.IGNORED.value
+    assintoma = ExamConfirmationEnum.IGNORED.value
+    edema = ExamConfirmationEnum.IGNORED.value
+    meningoe = ExamConfirmationEnum.IGNORED.value
+    poliadeno = ExamConfirmationEnum.IGNORED.value
+    febre = ExamConfirmationEnum.IGNORED.value
+    hepatome = ExamConfirmationEnum.IGNORED.value
+    sinais_icc = ExamConfirmationEnum.IGNORED.value
+    arritmias = ExamConfirmationEnum.IGNORED.value
+    astenia = ExamConfirmationEnum.IGNORED.value
+    esplenom = ExamConfirmationEnum.IGNORED.value
+    chagoma = ExamConfirmationEnum.IGNORED.value
+    exame = ExamConfirmationEnum.IGNORED.value
+    xenodiag = ExamConfirmationEnum.IGNORED.value
     cs_sexo = patient["sex"]
     dt_nasc = patient["dt_nasc"]
     sg_uf = patient["residenceUfId"]
@@ -164,7 +162,7 @@ def insert_infoPatient(patient):
     patient_id = patient["id"]
     infoPatient = InfoPatient(dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
-                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, res_hist, patient_id)
+                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, patient_id)
     db.session.add(infoPatient)
     db.session.commit()
     return infoPatient_schema.dump(infoPatient)
