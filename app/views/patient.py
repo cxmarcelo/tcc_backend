@@ -55,11 +55,10 @@ def get_patient_by_cpf(cpf):
     patient = Patient.query.filter(Patient.cpf == cpf).one()
 
     if patient:
-        state = States.query.filter(States.id == patient.residenceUfId)
-        county = Counties.query.filter(Counties.id == patient.residenceMunId)
-
         result = patient_schema.dump(patient)
+        state = States.query.filter(States.id == patient.residenceUfId).one()
         result["state"] = state_schema.dump(state)
+        county = Counties.query.filter(Counties.id == patient.residenceMunId).one()
         result["county"] = county_schema.dump(county)
 
         return jsonify({"message": "Paciente encontrado", "data": result}), 200
