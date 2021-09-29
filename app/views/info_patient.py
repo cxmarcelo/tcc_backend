@@ -66,16 +66,37 @@ def post_infoPatient():
 
 
 def update_info_patient(patient_id):
+    visitMunicipio = request.json['visitMunicipio']
+    visitEstado = request.json['visitEstado']
+
+    countState = 0
+    for stateId in visitEstado:
+        if countState == 0:
+            ant_uf_1 = stateId
+        if countState == 1:
+            ant_uf_2 = stateId
+        if countState == 2:
+            ant_uf_3 = stateId
+        if countState == 3:
+            break
+        countState += 1
+
+    countMun = 0
+    for munId in visitMunicipio:
+        if countMun == 0:
+            mun_1 = munId
+        if countMun == 1:
+            mun_2 = munId
+        if countMun == 2:
+            mun_3 = munId
+        if countMun == 3:
+            break
+        countMun += 1
+
     dt_notific = request.json['dt_notific']
     cs_gestant = request.json['cs_gestant']
     dt_invest = request.json['dt_invest']
     id_ocupa_n = request.json['id_ocupa_n']
-    ant_uf_1 = request.json['ant_uf_1']
-    mun_1 = request.json['mun_1']
-    ant_uf_2 = request.json['ant_uf_2']
-    mun_2 = request.json['mun_2']
-    ant_uf_3 = request.json['ant_uf_3']
-    mun_3 = request.json['mun_3']
     historia = request.json['historia']
     assintoma = request.json['assintoma']
     edema = request.json['edema']
