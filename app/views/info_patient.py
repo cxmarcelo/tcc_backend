@@ -66,8 +66,10 @@ def post_infoPatient():
 
 
 def update_info_patient(patient_id):
-    visitMunicipio = request.json['visitMunicipio']
-    visitEstado = request.json['visitEstado']
+    resultRequest = request.get_json()
+    print(resultRequest)
+    visitMunicipio = resultRequest['visitMunicipio']
+    visitEstado = resultRequest['visitEstado']
 
     print(visitMunicipio)
     visitMunicipio = sorted(visitMunicipio)
