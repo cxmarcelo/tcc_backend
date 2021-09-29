@@ -66,7 +66,6 @@ def post_infoPatient():
 
 
 def update_info_patient(patient_id):
-    dt_notific = request.json['dt_notific']
     cs_gestant = request.json['cs_gestant']
     dt_invest = request.json['dt_invest']
     id_ocupa_n = request.json['id_ocupa_n']
