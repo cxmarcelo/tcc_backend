@@ -69,7 +69,15 @@ def update_info_patient(patient_id):
     visitMunicipio = request.json['visitMunicipio']
     visitEstado = request.json['visitEstado']
 
+    print(visitMunicipio)
+    visitMunicipio = sorted(visitMunicipio)
+    print(visitMunicipio)
+
+    print(visitEstado)
+    visitEstado = sorted(visitEstado)
+    print(visitEstado)
     countState = 0
+
     for stateId in visitEstado:
         if countState == 0:
             ant_uf_1 = stateId
