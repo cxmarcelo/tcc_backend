@@ -67,7 +67,7 @@ def post_infoPatient():
 
 def update_info_patient(patient_id):
     cs_gestant = request.json['cs_gestant']
-    dt_invest = request.json['dt_invest']
+    #dt_invest = request.json['dt_invest']
     id_ocupa_n = request.json['id_ocupa_n']
     ant_uf_1 = request.json['ant_uf_1']
     mun_1 = request.json['mun_1']
@@ -96,9 +96,8 @@ def update_info_patient(patient_id):
         return jsonify({"message": "Consulta não existe", "data": {}})
 
     try:
-        info_patient.dt_notific = dt_notific
         info_patient.cs_gestant = cs_gestant
-        info_patient.dt_invest = dt_invest
+        #info_patient.dt_invest = dt_invest
         info_patient.id_ocupa_n = id_ocupa_n
         info_patient.ant_uf_1 = ant_uf_1
         info_patient.mun_1 = mun_1
