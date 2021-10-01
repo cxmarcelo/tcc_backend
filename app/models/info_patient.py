@@ -10,7 +10,7 @@ class InfoPatient(db.Model):
     cs_sexo = db.Column(db.String(1))
     cs_gestant = db.Column(db.Integer, nullable=False)
     cs_raca = db.Column(db.Integer, nullable=False)
-    dt_invest = db.Column(db.Date, nullable=False)
+    dt_invest = db.Column(db.Date)
     id_ocupa_n = db.Column(db.Integer)
     ant_uf_1 = db.Column(db.Integer)
     mun_1 = db.Column(db.Integer)

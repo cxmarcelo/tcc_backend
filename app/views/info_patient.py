@@ -72,7 +72,7 @@ def update_info_patient(patient_id):
 def insert_infoPatient(patient):
     dt_notific = datetime.datetime.now()
     cs_gestant = PregnantCodeEnum.IGNORED.value
-    dt_invest = datetime.datetime.now()
+    dt_invest = None
     id_ocupa_n = 0
     ant_uf_1 = 10000
     mun_1 = 10000
