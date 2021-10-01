@@ -4,7 +4,7 @@ from app import app
 import jwt
 from werkzeug.security import check_password_hash
 from flask import request, jsonify
-from .users import user_by_username
+from .users import user_by_email
 from functools import wraps
 
 
@@ -13,14 +13,15 @@ def auth():
     if not user_auth or not user_auth.username or not user_auth.password:
         return jsonify({"message": "could not verify", "WWW-Authenticate": "Basic auth='Login required'"}), 401
 
-    user = user_by_username(user_auth.username)
+    user = user_by_email(user_auth.username)
     if not user:
         return jsonify({"message": "user not found", "data": {}}), 401
 
     if user and check_password_hash(user.password, user_auth.password):
-        token = jwt.encode({"username": user.username, "exp": datetime.datetime.now() + datetime.timedelta(hours=12)},
+        token = jwt.encode({"email": user.email, "exp": datetime.datetime.now() + datetime.timedelta(hours=12),
+                            "user_type": user.user_type},
                            app.config["SECRET_KEY"], algorithm="HS256")
-        return jsonify({"message": "Validated successfully", "token": token,
+        return jsonify({"message": "Login   ", "token": token,
                         "exp": datetime.datetime.now() + datetime.timedelta(hours=12)})
 
     return jsonify({"message": "could not verify", "WWW-Authenticate": 'Basic auth="Login required"'}), 401
@@ -34,7 +35,7 @@ def token_required(f):
             return jsonify({'message': 'token is missing', 'data': []}), 401
         try:
             data = jwt.decode(token[7:], app.config['SECRET_KEY'], algorithms="HS256")
-            current_user = user_by_username(username=data['username'])
+            current_user = user_by_email(email=data['email'])
             print(current_user)
         except Exception as e:
             print(e)

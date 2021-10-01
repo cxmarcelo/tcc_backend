@@ -5,13 +5,13 @@ from ..models.users import Users, user_schema, users_schema
 
 
 def post_user():
-    username = request.json['username']
-    password = request.json['password']
     name = request.json['name']
     email = request.json['email']
+    password = request.json['password']
+    crm = request.json['crm']
     user_type = request.json['user_type']
     pass_hash = generate_password_hash(password)
-    user = Users(username, pass_hash, name, email, user_type)
+    user = Users(email, pass_hash, name, crm, user_type)
 
     try:
         db.session.add(user)
@@ -24,11 +24,9 @@ def post_user():
 
 
 def update_user(user_id):
-    username = request.json['username']
-    password = request.json['password']
     name = request.json['name']
-    email = request.json['email']
-
+    password = request.json['password']
+    crm = request.json['crm']
     user = Users.query.get(user_id)
 
     if not user:
@@ -37,10 +35,9 @@ def update_user(user_id):
     pass_hash = generate_password_hash(password)
 
     try:
-        user.username = username
         user.password = pass_hash
         user.name = name
-        user.email = email
+        user.crm = crm
         db.session.commit()
         result = user_schema.dump(user)
         return jsonify({'message': 'successfully updated', 'data': result}), 200
@@ -81,9 +78,9 @@ def delete_user(user_id):
         return jsonify({"message": "unable to delete", "data": {}}), 500
 
 
-def user_by_username(username):
+def user_by_email(email):
     try:
-        return Users.query.filter(Users.username == username).one()
+        return Users.query.filter(Users.email == email).one()
     except Exception as e:
         print(e)
         return None

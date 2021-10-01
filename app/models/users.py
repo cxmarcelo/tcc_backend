@@ -4,24 +4,24 @@ from app import db, ma
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
-    name = db.Column(db.String(60), nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(20), nullable=False)
+    crm = db.Column(db.String(20))
+    name = db.Column(db.String(100), nullable=False)
     user_type = db.Column(db.Integer, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.datetime.now())
 
-    def __init__(self, username, password, name, email, user_type):
-        self.username = username
+    def __init__(self, email, password, name, crm, user_type):
+        self.email = email
         self.password = password
         self.name = name
-        self.email = email
-        self.user_type = user_type;
+        self.crm = crm
+        self.user_type = user_type
 
 
 class UsersSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'username', 'name', 'email', 'password', 'created_on')
+        fields = ('id', 'email', 'name', 'password', 'crm', 'user_type', 'created_on')
 
 
 user_schema = UsersSchema()
