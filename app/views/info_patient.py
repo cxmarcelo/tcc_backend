@@ -6,7 +6,9 @@ from flask import request, jsonify
 from ..enums.examRealizedEnum import ExamConfirmationEnum
 from ..models.info_patient import InfoPatient, infoPatient_schema, infoPatients_schema
 from ..enums.PregnantCodeEnum import PregnantCodeEnum
-from sqlalchemy import desc
+from sqlalchemy import desc, create_engine
+import pandas as pd
+import config
 
 
 def update_info_patient(patient_id):
@@ -118,6 +120,17 @@ def get_info_patients():
         return jsonify({"message": "success fetched", "data": result})
 
     return jsonify({"message": "nothing found", "data": {}})
+
+
+def get_dataframe_info_patient():
+    engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+    chagas = None
+    try:
+        chagas = pd.read_sql_query("Select * from info_patient", engine)
+    except Exception as e:
+        print(e)
+
+    return chagas
 
 
 def get_last_info_by_patient(patient_id):
