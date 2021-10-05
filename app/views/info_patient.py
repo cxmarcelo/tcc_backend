@@ -32,6 +32,7 @@ def update_info_patient(patient_id):
     chagoma = request.json['chagoma']
     exame = request.json['exame']
     xenodiag = request.json['xenodiag']
+    dt_invest = request.json['dt_invest']
 
     info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
 
@@ -41,6 +42,7 @@ def update_info_patient(patient_id):
     try:
         info_patient.cs_gestant = cs_gestant
         info_patient.id_ocupa_n = id_ocupa_n
+        info_patient.dt_invest = dt_invest
         info_patient.ant_uf_1 = ant_uf_1
         info_patient.mun_1 = mun_1
         info_patient.ant_uf_2 = ant_uf_2
