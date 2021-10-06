@@ -2,7 +2,9 @@ from app import db
 from ..models.states import States
 from ..models.counties import Counties
 from ..models.occupation import Occupation
+from sqlalchemy import create_engine
 import pandas as pd
+import config
 
 
 def aux_insert_state(state_id, name, initial):
@@ -74,3 +76,6 @@ def insert_data_occupations():
         if not aux_insert_occupation(item[0], item[1]):
             break
 
+def insert_info_patient(chagas_excel):
+    engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+    chagas_excel.to_sql('info_patient', engine)

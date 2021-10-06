@@ -3,7 +3,6 @@ from time import time
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score
-from app.views import info_patient
 
 colunas = ['dt_notific',
  'sg_uf',
@@ -51,6 +50,8 @@ class Chagas():
 
        def random_forest(self):
               '''
+                     Initiate random foreste classifier
+                     Return: RandomForestClassifier
               '''
               parametros = self.chagas[colunas]
               resultados = self.chagas['classi_fin']
