@@ -9,15 +9,16 @@ from functools import wraps
 
 
 def auth():
-    user_auth = request.authorization
-    if not user_auth or not user_auth.username or not user_auth.password:
-        return jsonify({"message": "could not verify", "WWW-Authenticate": "Basic auth='Login required'"}), 401
+    email = request.json['email']
+    password = request.json['password']
+    if not email or not password:
+        return jsonify({"message": "Email e Senha são obrigatórios."}), 401
 
-    user = user_by_email(user_auth.username)
+    user = user_by_email(email)
     if not user:
         return jsonify({"message": "user not found", "data": {}}), 401
 
-    if user and check_password_hash(user.password, user_auth.password):
+    if user and check_password_hash(user.password, password):
         token = jwt.encode({"email": user.email, "exp": datetime.datetime.now() + datetime.timedelta(hours=12),
                             "user_type": user.user_type},
                            app.config["SECRET_KEY"], algorithm="HS256")
