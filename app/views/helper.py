@@ -19,7 +19,8 @@ def auth():
         return jsonify({"message": "user not found", "data": {}}), 401
 
     if user and check_password_hash(user.password, password):
-        token = jwt.encode({"email": user.email, "exp": datetime.datetime.now() + datetime.timedelta(hours=12),
+        token = jwt.encode({"id": user.id, "email": user.email, "name": user.name,
+                            "exp": datetime.datetime.now() + datetime.timedelta(hours=12),
                             "user_type": user.user_type},
                            app.config["SECRET_KEY"], algorithm="HS256")
         return jsonify({"message": "Login   ", "token": token,

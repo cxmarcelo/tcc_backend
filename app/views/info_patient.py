@@ -73,6 +73,22 @@ def update_info_patient(patient_id):
         return jsonify({'message': 'unable to update', 'data': {}}), 500
 
 
+def update_classi_fin_info_patient(patient_id, classi_fin):
+    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+
+    if not info_patient:
+        return None
+
+    try:
+        info_patient.classi_fin = classi_fin
+        db.session.commit()
+        result = infoPatient_schema.dump(info_patient)
+        return result
+    except Exception as e:
+        print(e)
+        return None
+
+
 def insert_infoPatient(patient):
     dt_notific = datetime.datetime.now()
     cs_gestant = PregnantCodeEnum.IGNORED.value
@@ -104,9 +120,10 @@ def insert_infoPatient(patient):
     id_mn_resi = patient["residenceMunId"]
     cs_raca = patient["cs_raca"]
     patient_id = patient["id"]
+    classi_fin = None
     infoPatient = InfoPatient(dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
                  mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
-                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, patient_id)
+                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, patient_id, classi_fin)
     db.session.add(infoPatient)
     db.session.commit()
     return infoPatient_schema.dump(infoPatient)
