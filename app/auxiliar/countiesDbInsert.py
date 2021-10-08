@@ -76,6 +76,12 @@ def insert_data_occupations():
         if not aux_insert_occupation(item[0], item[1]):
             break
 
-def insert_info_patient(chagas_excel):
+def insert_info_patient(path_chagas_excel):
+    '''
+        Only use this method once, its just to transcribe all the values in the chagas excel into sql.\n
+        This method will replace ALL the data in SQL.\n\t
+        Params:\n\t\t - Path to Excel file.
+    '''
+    chagas_excel = pd.read_excel(path_chagas_excel, index_col=None)
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-    chagas_excel.to_sql('info_patient', engine)
+    chagas_excel.to_sql('info_patient', engine, index=False, if_exists='replace')

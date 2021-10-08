@@ -1,8 +1,7 @@
-import joblib
 from time import time
-import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.preprocessing import LabelEncoder
 
 colunas = ['dt_notific',
  'sg_uf',
@@ -44,8 +43,14 @@ class Chagas():
        '''
        
        def __init__(self, dataframe, threshold=False):
-              self.chagas = dataframe
+              chagas = dataframe
               self.threshold = threshold
+              self.parametros = chagas[colunas]
+              self.resultados = chagas['classi_fin']
+              # Converte os valores para numericos
+              for feature in ['cs_sexo', 'id_ocupa_n', 'dt_notific']:
+                     le = LabelEncoder()
+                     self.parametros[feature] = le.fit_transform(self.parametros[feature].astype(str))
               return
 
        def random_forest(self):
@@ -53,10 +58,8 @@ class Chagas():
                      Initiate random foreste classifier
                      Return: RandomForestClassifier
               '''
-              parametros = self.chagas[colunas]
-              resultados = self.chagas['classi_fin']
               rf = RandomForestClassifier(n_estimators=256, max_depth=16)
-              rf.fit(parametros, resultados.values.ravel())
+              rf.fit(self.parametros, self.resultados.values.ravel())
               return rf
 
        def predict(self, patient):
@@ -94,15 +97,30 @@ class Chagas():
        # val_parametros_final = pd.read_csv(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\Datasets final\validacao_parametros_final.csv')
        # val_labels = pd.read_csv(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\split_data\validacao_resultado.csv')
        # modelo_pkl = joblib.load(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\Modelos\modelo_final_parametros.pkl')
-       # chagas = pd.read_excel(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\CHAGAS-final.xlsx')
-       # chagas = pd.read_sql(sql, con)
-       # chagas = info_patient.get_dataframe_info_patient()
+
+       # import pandas as pd
+       # import numpy as np
+       # chagas = pd.read_excel(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\CHAGAS-todos-limpa.xlsx')
 
        # colunas = ['DT_NOTIFIC_clean', 'SG_UF', 'ID_MN_RESI', 'CS_SEXO_clean', 'CS_GESTANT', 'CS_RACA_clean',
        #        'DT_INVEST', 'ID_OCUPA_N_clean', 'ANT_UF_1_clean', 'ANT_UF_2_clean', 'ANT_UF_3_clean', 'MUN_1_clean',
        #        'MUN_2_clean', 'MUN_3_clean', 'HISTORIA_clean', 'ASSINTOMA_clean', 'EDEMA_clean', 'MENINGOE_clean', 
        #        'POLIADENO_clean', 'FEBRE_clean', 'HEPATOME_clean', 'SINAIS_ICC_clean', 'ARRITMIAS_clean', 
-       #        'ASTENIA_clean', 'ESPLENOM_clean', 'CHAGOMA_clean', 'EXAME_clean', 'XENODIAG_clean']
+       #        'ASTENIA_clean', 'ESPLENOM_clean', 'CHAGOMA_clean', 'EXAME_clean', 'XENODIAG_clean', 'CLASSI_FIN']
+       # dt_nasc = np.zeros(chagas.shape[0])
+       # chagas['dt_nasc'] = dt_nasc
+       # chagas = chagas[colunas]
+
+       # colunas2 = []
+       # for item in colunas:
+       #        item = item.lower()
+       #        if '_clean' in item:
+       #               colunas2.append(item.split('_clean')[0])
+       #        else:
+       #               colunas2.append(item)
+
+       # chagas.columns = colunas2
+       # chagas.to_excel(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\CHAGAS-todos-limpa.xlsx', index=False)
 
        # parametros = chagas[colunas]
        # resultados = chagas['CLASSI_FIN']
