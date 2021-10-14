@@ -43,8 +43,14 @@ class Chagas():
        '''
        
        def __init__(self, dataframe, threshold=False):
+              '''
+                     Recebe um dataframe.
+              '''
               chagas = dataframe
-              self.threshold = threshold
+              if bool(threshold):
+                     self.threshold = threshold
+              else:
+                     self.threshold = 0.12
               self.parametros = chagas[colunas]
               self.resultados = chagas['classi_fin']
               # Converte os valores para numericos
@@ -66,12 +72,11 @@ class Chagas():
               '''
                      Classi_fin: Mysql
               '''
+              result = {}
               rf = self.random_forest()
-              if self.threshold == False:
-                     result = (rf.predict(patient) > 0)
-              else:
-                     result = rf.predict_proba(patient)[:, 1]
-                     result = (result >= self.threshold)
+              result['Chagas_sem_threshold'] = (rf.predict(patient) > 0)
+              result['Chagas_Probabilidade'] = rf.predict_proba(patient)[:, 1]
+              result['Chagas_com_threshold'] = (result['Chagas_Probabilidade'] >= self.threshold)
               return result
 
        def avalia_modelo(self, name, model, features, labels, threshold=None):
