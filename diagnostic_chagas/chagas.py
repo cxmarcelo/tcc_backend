@@ -1,3 +1,4 @@
+import sys
 from time import time
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score
@@ -46,7 +47,11 @@ class Chagas():
               '''
                      Recebe um dataframe.
               '''
-              chagas = dataframe
+              if dataframe != None:
+                     chagas = dataframe
+              else:
+                     print('DataFrame vazio. Encerrando API!')
+                     sys.exit(0)
               if bool(threshold):
                      self.threshold = threshold
               else:
