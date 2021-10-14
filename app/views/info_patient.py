@@ -9,6 +9,7 @@ from ..enums.PregnantCodeEnum import PregnantCodeEnum
 from sqlalchemy import desc, create_engine
 import pandas as pd
 import config
+from diagnostic_chagas.chagas import Chagas
 
 
 def update_info_patient(patient_id):
@@ -158,3 +159,13 @@ def get_last_info_by_patient(patient_id):
         return jsonify({"message": "Consulta do paciente encontrado", "data": result})
 
     return jsonify({"message": "Consulta do Paciente não encontrado", "data": {}})
+
+
+def get_result(patient_id):
+    patient = get_last_info_by_patient(patient_id)
+    chagas = Chagas(get_dataframe_info_patient())
+    result = chagas.predict(patient)
+    if bool(result):
+        return jsonify({"message": "Resultado Encontrado", "data": result}), 200
+    else:
+        return jsonify({"message": "Resultado não encontrado", "data": None}), 404

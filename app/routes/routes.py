@@ -102,3 +102,8 @@ def get_last_info_by_patient(patient_id):
 @app.route("/info_patient/<patient_id>", methods=['PUT'])
 def update_info_patient(patient_id):
     return info_patient.update_info_patient(patient_id)
+
+
+@app.route("/result/<patient_id>", methods=['GET'])
+def result(patient_id):
+    return info_patient.get_result(patient_id)
