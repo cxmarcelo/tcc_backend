@@ -164,7 +164,7 @@ def get_last_info_by_patient(patient_id):
 def get_info_by_patient_id(patient_id):
     info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
     if info_patient:
-        return infoPatients_schema.dump(info_patient)
+        return infoPatient_schema.dump(info_patient)
     return None
 
 
