@@ -1,5 +1,7 @@
 import sys
+import pandas as pd
 from time import time
+from scipy.sparse import data
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.preprocessing import LabelEncoder
@@ -47,10 +49,12 @@ class Chagas():
               '''
                      Recebe um dataframe.
               '''
-              if bool(dataframe) != None:
+              chagas = pd.DataFrame()
+              chagas = dataframe
+              if not chagas.empty:
                      chagas = dataframe
               else:
-                     print('DataFrame vazio. Encerrando API!')
+                     print("Erro ao iniciar Classe Chagas. Encerrando API.")
                      sys.exit(0)
               if bool(threshold):
                      self.threshold = threshold
