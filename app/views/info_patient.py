@@ -152,19 +152,32 @@ def get_dataframe_info_patient():
 
 
 def get_last_info_by_patient(patient_id):
-    patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
-
-    if patient:
-        result = infoPatients_schema.dump(patient)
+    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+    print(info_patient)
+    if info_patient:
+        result = infoPatients_schema.dump(info_patient)
         return jsonify({"message": "Consulta do paciente encontrado", "data": result})
 
     return jsonify({"message": "Consulta do Paciente não encontrado", "data": {}})
 
 
+def get_info_by_patient_id(patient_id):
+    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+    if info_patient:
+        return infoPatients_schema.dump(info_patient)
+    return None
+
+
 def get_result(patient_id):
-    patient = get_last_info_by_patient(patient_id)
+    info_patient = get_info_by_patient_id(patient_id)
     chagas = Chagas(get_dataframe_info_patient())
-    result = chagas.predict(patient)
+
+    if not info_patient:
+        return jsonify({"message": "Paciente não encontrado", "data": None}), 200
+
+    dataframe = pd.DataFrame.from_dict(info_patient)
+    result = chagas.predict(dataframe)
+
     if bool(result):
         return jsonify({"message": "Resultado Encontrado", "data": result}), 200
     else:
