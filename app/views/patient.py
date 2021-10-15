@@ -4,7 +4,7 @@ from ..models.patient import Patient, patient_schema, patients_schema
 from ..models.states import States, state_schema
 from ..models.counties import Counties, county_schema
 from ..models.info_patient import InfoPatient, infoPatient_schema
-from .info_patient import insert_infoPatient
+from .info_patient import insert_infoPatient, get_result
 
 
 def post_patient():
@@ -67,6 +67,15 @@ def get_patient_by_cpf(cpf):
         return jsonify({"message": "Paciente encontrado", "data": result}), 200
 
     return jsonify({"message": "Paciente não encontrado.", "data": {}}), 404
+
+
+def get_result_by_cpf(cpf):
+    patient = Patient.query.filter(Patient.cpf == cpf).one()
+
+    if not patient:
+        return jsonify({"message": "Paciente não encontrado.", "data": {}}), 404
+
+    return get_result(patient.id)
 
 
 def delete_patient(patient_id):

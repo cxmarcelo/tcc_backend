@@ -104,6 +104,6 @@ def update_info_patient(patient_id):
     return info_patient.update_info_patient(patient_id)
 
 
-@app.route("/result/<patient_id>", methods=['GET'])
-def result(patient_id):
-    return info_patient.get_result(patient_id)
+@app.route("/result/<cpf>", methods=['GET'])
+def result(cpf):
+    return patient.get_result_by_cpf(cpf)
