@@ -175,8 +175,7 @@ def get_result(patient_id):
     if not info_patient:
         return jsonify({"message": "Paciente não encontrado", "data": None}), 200
 
-    print(info_patient['data'])
-    dataframe = pd.DataFrame.from_dict(info_patient['data'])
+    dataframe = pd.DataFrame(info_patient, index=[0])
     result = chagas.predict(dataframe)
     return result
 

@@ -1,4 +1,5 @@
 import sys
+import json
 import pandas as pd
 from time import time
 from scipy.sparse import data
@@ -56,6 +57,8 @@ class Chagas():
               else:
                      print("Erro ao iniciar Classe Chagas. Encerrando API.")
                      sys.exit(0)
+              # remove possiveis pacientes novos com valores nulos
+              chagas.dropna(subset=['classi_fin'], inplace=True)
               if bool(threshold):
                      self.threshold = threshold
               else:
@@ -63,7 +66,7 @@ class Chagas():
               self.parametros = chagas[colunas]
               self.resultados = chagas['classi_fin']
               # Converte os valores para numericos
-              for feature in ['cs_sexo', 'id_ocupa_n', 'dt_notific']:
+              for feature in ['cs_sexo', 'id_ocupa_n', 'dt_notific', 'dt_invest']:
                      le = LabelEncoder()
                      self.parametros[feature] = le.fit_transform(self.parametros[feature].astype(str))
               return
@@ -81,11 +84,16 @@ class Chagas():
               '''
                      Classi_fin: Mysql
               '''
+              patient = patient[colunas]
+              for feature in ['cs_sexo', 'id_ocupa_n', 'dt_notific', 'dt_invest']:
+                     le = LabelEncoder()
+                     patient[feature] = le.fit_transform(patient[feature].astype(str))
               result = {}
               rf = self.random_forest()
-              result['Chagas_sem_threshold'] = (rf.predict(patient) > 0)
-              result['Chagas_Probabilidade'] = rf.predict_proba(patient)[:, 1]
-              result['Chagas_com_threshold'] = (result['Chagas_Probabilidade'] >= self.threshold)
+              Chagas_sem_threshold = str((rf.predict(patient) > 0)[0])
+              Chagas_Probabilidade = rf.predict_proba(patient)[:, 1][0]
+              Chagas_com_threshold = str(Chagas_Probabilidade >= self.threshold)
+              result = {'Chagas_sem_threshold': Chagas_sem_threshold, 'Chagas_Probabilidade': Chagas_Probabilidade, 'Chagas_com_threshold': Chagas_com_threshold}
               return result
 
        def avalia_modelo(self, name, model, features, labels, threshold=None):
@@ -121,9 +129,10 @@ class Chagas():
        #        'MUN_2_clean', 'MUN_3_clean', 'HISTORIA_clean', 'ASSINTOMA_clean', 'EDEMA_clean', 'MENINGOE_clean', 
        #        'POLIADENO_clean', 'FEBRE_clean', 'HEPATOME_clean', 'SINAIS_ICC_clean', 'ARRITMIAS_clean', 
        #        'ASTENIA_clean', 'ESPLENOM_clean', 'CHAGOMA_clean', 'EXAME_clean', 'XENODIAG_clean', 'CLASSI_FIN']
+       # chagas = chagas[colunas]
        # dt_nasc = np.zeros(chagas.shape[0])
        # chagas['dt_nasc'] = dt_nasc
-       # chagas = chagas[colunas]
+       # colunas.append('dt_nasc')
 
        # colunas2 = []
        # for item in colunas:
@@ -134,7 +143,7 @@ class Chagas():
        #               colunas2.append(item)
 
        # chagas.columns = colunas2
-       # chagas.to_excel(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\CHAGAS-todos-limpa.xlsx', index=False)
+       # chagas.to_excel(r'C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\Resultado\CHAGAS-usar_essa.xlsx', index=False)
 
        # parametros = chagas[colunas]
        # resultados = chagas['CLASSI_FIN']

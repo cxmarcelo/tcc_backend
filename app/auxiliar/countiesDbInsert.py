@@ -52,7 +52,7 @@ def aux_insert_occupation(occupation_id, name):
 """
 
 def insert_data_estados():
-    df = pd.read_json("C:/Users/Marcelo/Desktop/TCC/estados.json")
+    df = pd.read_json(r"C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\estados.json")
     df = df.drop("regiao", axis=1)
     df.columns = ["id", "initial", "name"];
     #print(df)
@@ -61,7 +61,7 @@ def insert_data_estados():
 
 
 def insert_data_municipios():
-    df = pd.read_json("C:/Users/Marcelo/Desktop/TCC/municipios.json")
+    df = pd.read_json(r"C:\Users\dougl\Desktop\VSCode - Python\TCC\Dados2\municipios.json")
 
     for item in df.values:
         mun_id = str(item[0])[:-1]
@@ -84,4 +84,4 @@ def insert_info_patient(path_chagas_excel):
     '''
     chagas_excel = pd.read_excel(path_chagas_excel, index_col=None)
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-    chagas_excel.to_sql('info_patient', engine, index=False, if_exists='replace')
+    chagas_excel.to_sql('info_patient', engine, index=False, if_exists='append')
