@@ -47,7 +47,7 @@ class Chagas():
               '''
                      Recebe um dataframe.
               '''
-              if dataframe != None:
+              if bool(dataframe) != None:
                      chagas = dataframe
               else:
                      print('DataFrame vazio. Encerrando API!')
