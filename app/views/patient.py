@@ -75,7 +75,12 @@ def get_result_by_cpf(cpf):
     if not patient:
         return jsonify({"message": "Paciente não encontrado.", "data": {}}), 404
 
-    return get_result(patient.id)
+    result = get_result(patient.id)
+
+    if bool(result):
+        return jsonify({"message": "Resultado Encontrado", "data": result}), 200
+    else:
+        return jsonify({"message": "Resultado não encontrado", "data": None}), 404
 
 
 def delete_patient(patient_id):

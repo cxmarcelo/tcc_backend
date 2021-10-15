@@ -177,8 +177,5 @@ def get_result(patient_id):
 
     dataframe = pd.DataFrame.from_dict(info_patient)
     result = chagas.predict(dataframe)
+    return result
 
-    if bool(result):
-        return jsonify({"message": "Resultado Encontrado", "data": result}), 200
-    else:
-        return jsonify({"message": "Resultado não encontrado", "data": None}), 404
