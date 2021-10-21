@@ -101,7 +101,7 @@ def insert_infoPatient(patient):
     mun_2 = 10000
     ant_uf_3 = 10000
     mun_3 = 10000
-    historia = ExamConfirmationEnum.IGNORED.value
+    historia = 3
     assintoma = ExamConfirmationEnum.IGNORED.value
     edema = ExamConfirmationEnum.IGNORED.value
     meningoe = ExamConfirmationEnum.IGNORED.value
@@ -113,8 +113,8 @@ def insert_infoPatient(patient):
     astenia = ExamConfirmationEnum.IGNORED.value
     esplenom = ExamConfirmationEnum.IGNORED.value
     chagoma = ExamConfirmationEnum.IGNORED.value
-    exame = ExamConfirmationEnum.IGNORED.value
-    xenodiag = ExamConfirmationEnum.IGNORED.value
+    exame = 3
+    xenodiag = 3
     cs_sexo = patient["sex"]
     dt_nasc = patient["dt_nasc"]
     sg_uf = patient["residenceUfId"]
