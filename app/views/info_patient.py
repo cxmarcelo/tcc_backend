@@ -36,8 +36,10 @@ def update_info_patient(patient_id):
     exame = request.json['exame']
     xenodiag = request.json['xenodiag']
     dt_invest = request.json['dt_invest']
+    classi_fin = request.json['classi_fin']
 
-    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+    info_patient = InfoPatient.query.filter(
+        InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
 
     if not info_patient:
         return jsonify({"message": "Consulta não existe", "data": {}})
@@ -66,6 +68,7 @@ def update_info_patient(patient_id):
         info_patient.chagoma = chagoma
         info_patient.exame = exame
         info_patient.xenodiag = xenodiag
+        info_patient.classi_fin = classi_fin
         db.session.commit()
         result = infoPatient_schema.dump(info_patient)
         return jsonify({'message': 'successfully updated', 'data': result}), 200
@@ -75,7 +78,8 @@ def update_info_patient(patient_id):
 
 
 def update_classi_fin_info_patient(patient_id, classi_fin):
-    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+    info_patient = InfoPatient.query.filter(
+        InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
 
     if not info_patient:
         return None
@@ -123,8 +127,8 @@ def insert_infoPatient(patient):
     patient_id = patient["id"]
     classi_fin = None
     infoPatient = InfoPatient(dt_notific, sg_uf, id_mn_resi, dt_nasc, cs_sexo, cs_gestant, cs_raca, dt_invest, id_ocupa_n, ant_uf_1,
-                 mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
-                 hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, patient_id, classi_fin)
+                              mun_1, ant_uf_2, mun_2, ant_uf_3, mun_3, historia, assintoma, edema, meningoe, poliadeno, febre,
+                              hepatome, sinais_icc, arritmias, astenia, esplenom, chagoma, exame, xenodiag, patient_id, classi_fin)
     db.session.add(infoPatient)
     db.session.commit()
     return infoPatient_schema.dump(infoPatient)
@@ -152,7 +156,8 @@ def get_dataframe_info_patient():
 
 
 def get_last_info_by_patient(patient_id):
-    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+    info_patient = InfoPatient.query.filter(
+        InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
     print(info_patient)
     if info_patient:
         result = infoPatients_schema.dump(info_patient)
@@ -162,7 +167,8 @@ def get_last_info_by_patient(patient_id):
 
 
 def get_info_by_patient_id(patient_id):
-    info_patient = InfoPatient.query.filter(InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
+    info_patient = InfoPatient.query.filter(
+        InfoPatient.id_patient == patient_id).order_by(desc(InfoPatient.id)).one()
     if info_patient:
         return infoPatient_schema.dump(info_patient)
     return None
@@ -178,4 +184,3 @@ def get_result(patient_id):
     dataframe = pd.DataFrame(info_patient, index=[0])
     result = chagas.predict(dataframe)
     return result
-
